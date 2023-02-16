@@ -13,12 +13,14 @@ import java.time.Duration;
 @RestController
 public class NotifyController {
 
-    private SseChannel sseChannel = new SseChannel();
+    private final SseChannel sseChannel = new SseChannel();
 
     @GetMapping("/notify/connect/{storeCode}")
     public Flux<ServerSentEvent<Object>> connect(@PathVariable("storeCode") String storeCode) {
         Flux<NotifyDTO> userStream = sseChannel.connect(storeCode).toFlux();
-        Flux<String> tickStream = Flux.interval(Duration.ofSeconds(3)).map(tick -> "connect : " + storeCode);
+
+        //3초 간격으로 이벤트를 발생하는 스트림
+        Flux<String> tickStream = Flux.interval(Duration.ofSeconds(1)).map(tick -> "connect : " + storeCode);
 
         return Flux.merge(userStream, tickStream)
                     .map(str -> ServerSentEvent.builder(str).build());

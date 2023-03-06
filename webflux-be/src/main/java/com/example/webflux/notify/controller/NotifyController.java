@@ -20,7 +20,7 @@ public class NotifyController {
         Flux<NotifyDTO> userStream = sseChannel.connect(storeCode).toFlux();
 
         //3초 간격으로 이벤트를 발생하는 스트림
-        Flux<String> tickStream = Flux.interval(Duration.ofSeconds(1)).map(tick -> "connect : " + storeCode);
+        Flux<String> tickStream = Flux.interval(Duration.ofSeconds(1)).map(tick -> "tick");
 
         return Flux.merge(userStream, tickStream)
                     .map(str -> ServerSentEvent.builder(str).build());

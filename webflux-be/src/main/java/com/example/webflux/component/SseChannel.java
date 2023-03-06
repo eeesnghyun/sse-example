@@ -32,9 +32,9 @@ public class SseChannel {
     }
 
     public static class StoreChannel {
-        private EmitterProcessor<NotifyDTO> processor;
-        private Flux<NotifyDTO> flux;
-        private FluxSink<NotifyDTO> sink;
+        private final EmitterProcessor<NotifyDTO> processor;
+        private final Flux<NotifyDTO> flux;
+        private final FluxSink<NotifyDTO> sink;
         private Runnable closeCallback;
 
         public StoreChannel() {

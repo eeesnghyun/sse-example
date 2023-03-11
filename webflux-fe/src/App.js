@@ -2,8 +2,11 @@ import './App.css';
 
 function init() {
     const connectStore = () => {
-      const storeCode = document.getElementById("storeCode").value;
+      const storeCode = document.getElementById('storeCode').value;
       if (storeCode === "") return;
+
+      document.getElementById('connectMessage').innerText = `${storeCode} 에 연결되었습니다.`;
+      document.getElementById('storeCode').disabled = true;
       
       const eventSource = new EventSource(`http://localhost:8080/notify/connect/${storeCode}`);
     
@@ -19,7 +22,7 @@ function init() {
         if (e.data !== "tick") {
           const result = JSON.parse(e.data);
 
-          document.getElementById("messageArea").innerHTML += `<p>! ${result.message} !</p>`;
+          document.getElementById('messageArea').innerHTML += `<p>! ${result.message} !</p>`;
         }
       };
     };
@@ -28,7 +31,8 @@ function init() {
     <div>   
       <div>
         <label>가게 코드 : </label><input type='text' id='storeCode' placeholder='가게 코드를 입력해주세요.'/>
-        <button type="button" onClick={connectStore}>접속</button>    
+        <button type="button" onClick={connectStore}>접속</button> 
+        <span id='connectMessage'></span>   
       </div>      
       <hr></hr>
       <div>메세지</div>
